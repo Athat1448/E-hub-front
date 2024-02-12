@@ -1,0 +1,54 @@
+.register-container {
+    margin: 100px auto;
+    max-width: 25%;
+}
+
+.register-header {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+  
+.form-group {
+    margin-bottom: 15px;
+}
+  
+.form-group label {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 5px;
+}
+  
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.login-label {
+    padding: 5px 0;
+    text-align: right;
+}
+  
+.register-button {
+    width: 100%;
+    background-color: #222;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+  
+.register-button:hover {
+    background-color: aqua;
+    color: black;
+    border: 2px solid lightblue;
+    padding: 8px 15px;
+}
+  
+@media screen and (max-width: 1080px) {
+    .register-container {
+        max-width: 60%;
+    }
+}
