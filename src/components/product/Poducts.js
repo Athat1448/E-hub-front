@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../Navbar";
 import "../../css/productList.css";
 
@@ -7,31 +8,34 @@ const ProductList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("http://localhost:8080/api/products", {
-        method: "GET",
-        header: { "Content-Type": "application/json" },
-      });
-      const data = await response.json();
-      setProductList(data);
+      try {
+        const response = await fetch("http://localhost:8080/products/getproducts");
+        const data = await response.json();
+        setProductList(data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
     };
+    
     fetchData();
   }, []);
 
   return (
-    
     <div>
       <Navbar />
       <h1>Product List</h1>
-            <div className="product-list">
-                {productList.map(product => (
-                    <div className="card" key={product.productId}>
-                        <img src={product.imageUrls[0]} alt={product.name} />
-                        <div className="card-body">
-                            <h2 className="card-title">{product.name}</h2>
-                        </div>
-                    </div>
-                ))}
+      <div className="product-list">
+        {productList.map((product) => (
+          <Link to={{ pathname: `/product/${product.id}`, state: { product } }} key={product.id}>
+            <div className="card">
+              <img src={product.imageUrls[0]} alt={product.name} />
+              <div className="card-body">
+                <h2 className="card-title">{product.name}</h2>
+              </div>
             </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 };

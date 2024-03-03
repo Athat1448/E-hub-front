@@ -6,6 +6,7 @@ import Products from './components/product/Poducts';
 import Createproduct from './components/product/CreateProduct';
 import Profile from './components/profile/Profile';
 import Incommingorder from './components/order/IncomingOrder';
+import ProductDetail from './components/product/ProductDetail';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/create" element={<Createproduct />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/order" element={<Incommingorder />} />
+          <Route path="/product/:productId" element={<ProductDetail />} />
         </Routes>
       </Router>
     </div>

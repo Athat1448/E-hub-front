@@ -8,7 +8,7 @@ const Login = () => {
   const handleLogin = async () => {
     console.log(JSON.stringify({ username, password }))
     try {
-      const response = await fetch('http://localhost:8080/api/login', {
+      const response = await fetch('http://localhost:8080/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -16,8 +16,11 @@ const Login = () => {
         body: JSON.stringify({ username, password }),
       });
 
+      const data = await response.json()
       if (response.ok) {
         console.log('Login successful');
+        console.log(data)
+        localStorage.setItem("token", data.token);
         window.location.href = '/product';
       } else {
         console.error('Login failed:', response.statusText);
