@@ -1,24 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../css/productDetail.css";
 
-const ProductDetail = ({ product }) => {
-  if (!product) {
-    return <div>No product data available</div>;
-  }
+const ProductDetail = () => {
+  const [product, setProduct] = useState({});
+  var strUrl = window.location.href;
+  var strId = strUrl.split("/");
+  var Id = Number(strId[4]);
 
-  const { imageUrls, name, description, price } = product;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/products/getproduct`, {
+          method: "GET",
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+            "Id": Id,
+          },
+        });
+        const data = await response.json();
+        setProduct(data);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      }
+    };
+    
+    fetchData();
+  }, []);
 
-  if (!imageUrls || !imageUrls.length) {
-    return <div>No image available</div>;
-  }
+  console.log(product);
 
   return (
-    <div className="product-detail">
-      <img src={imageUrls[0]} alt={name} />
-      <div className="details">
-        <h2>{name}</h2>
-        <p>{description}</p>
-        <p>Price: ${price}</p>
+    <div>
+      <h1 className="">Product Detail</h1>
+      <div className="">
+        <div className="">
+          {product.imageUrls && product.imageUrls.map((imageUrl, index) => (
+            <img key={index} src={imageUrl} alt={product.name} />
+          ))}
+            <h2 className="">{product.name}</h2>
+            <p className="">{product.description}</p>
+            {product.variants && product.variants.map((variant, index) => (
+              <div key={index}>
+                <h3>{variant.name}</h3>
+                <p>{variant.price}</p>
+                <p>{variant.quantity}</p>
+                <p>{variant.option}</p>
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );

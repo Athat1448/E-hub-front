@@ -18,10 +18,26 @@ const Login = () => {
 
       const data = await response.json()
       if (response.ok) {
-        console.log('Login successful');
-        console.log(data)
         localStorage.setItem("token", data.token);
-        window.location.href = '/product';
+        
+        const role = await fetch("http://localhost:8080/user/validate", {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          },
+        });
+        console.log(role);
+        console.log(role.ok, role.message, role.statusText);
+
+        if(role.ok){
+          window.location.href = "/order";
+        }
+        else if(role.message === "Authorization failed: user has no roles."){
+          window.location.href = "/createstore";
+        }else{
+          console.error('Login failed:', role.statusText);
+        }
+        
       } else {
         console.error('Login failed:', response.statusText);
       }
@@ -36,13 +52,13 @@ const Login = () => {
       <div className="form-group">
         <label>Username</label>
         <div>
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+          <input required type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
         </div>
       </div>
       <div className="form-group">
         <label>Password</label>
         <div>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input required type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
       </div>
       <div>

@@ -17,6 +17,7 @@ const Register = () => {
 
       if (response.ok) {
         console.log('User registered successfully');
+        window.location.href = '/login';
       } else {
         console.error('Failed to register user:', response.statusText);
       }
@@ -30,11 +31,11 @@ const Register = () => {
       <h2 className="register-header">Register</h2>
       <div className="form-group">
         <label>Username</label>
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+        <input required type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
       </div>
       <div className="form-group">
         <label>Password</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input required type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       </div>
       <button className="register-button" onClick={handleRegister}>Register</button>
       <div className="form-group login-label">

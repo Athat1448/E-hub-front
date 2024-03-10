@@ -6,7 +6,7 @@ const incommingorder = () => {
     return (
         <div>
             <Navbar />
-            <h1> createproduct </h1>
+            <h1> Order </h1>
         </div>
     );
 };
