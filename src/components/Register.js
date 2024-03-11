@@ -14,10 +14,12 @@ const Register = () => {
         },
         body: JSON.stringify({ username, password }),
       });
+      const token = await response.text();
 
       if (response.ok) {
         console.log('User registered successfully');
-        window.location.href = '/login';
+        localStorage.setItem("token", token);
+        window.location.href = '/createstore';
       } else {
         console.error('Failed to register user:', response.statusText);
       }
@@ -28,7 +30,7 @@ const Register = () => {
 
   return (
     <div className="register-container">
-      <h2 className="register-header">Register</h2>
+      <h1 className="register-header">Register</h1>
       <div className="form-group">
         <label>Username</label>
         <input required type="text" value={username} onChange={(e) => setUsername(e.target.value)} />

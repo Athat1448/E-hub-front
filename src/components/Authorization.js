@@ -9,7 +9,7 @@ export const AuthorizationProvider = ({ children }) => {
         try {
             const token = localStorage.getItem('token');
             const response = await fetch('/user/validate', {
-                method: 'GET',
+                method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
