@@ -3,14 +3,12 @@ import '../../css/orderlist.css';
 import Navbar from "../Navbar";
 
 function OrdersList() {
-    const [orders, setOrders] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
-  
-    const [selectedDateFilter, setSelectedDateFilter] = useState('paidAt'); // Default filter by "paidAt"
-    const [sortedBy, setSortedBy] = useState('latest'); // Default sort by "latest"
+  const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [selectedDateFilter, setSelectedDateFilter] = useState('paidAt'); 
+  const [sortedBy, setSortedBy] = useState('latest'); 
 
-  // Method to get the token from localStorage
   const getToken = () => {
     const token = localStorage.getItem('token');
     return token ? token : null;
@@ -54,11 +52,9 @@ function OrdersList() {
     setSortedBy(event.target.value);
   };
 
-  // Implement sorting logic based on `selectedDateFilter` and `sortedBy`
   const sortedOrders = React.useMemo(() => {
     if (orders.length === 0) return [];
-
-    let sortedData = [...orders]; // Copy the array
+    let sortedData = [...orders]; 
     if (selectedDateFilter === 'checkoutAt') {
       sortedData.sort((a, b) => new Date(a.checkoutAt) - new Date(b.checkoutAt));
     } else if (selectedDateFilter === 'lastUpdatedAt') {
@@ -66,9 +62,8 @@ function OrdersList() {
     } else if (selectedDateFilter === 'paidAt') {
       sortedData.sort((a, b) => new Date(a.paidAt) - new Date(b.paidAt));
     }
-
     if (sortedBy === 'latest') {
-      sortedData.reverse(); // Sort from newest to oldest
+      sortedData.reverse(); 
     }
 
     return sortedData;
@@ -100,28 +95,18 @@ function OrdersList() {
       <li key={order.orderNumber} className="order-card">
         <div className="card-header">
           <p className="order-date">{new Date(order[selectedDateFilter]).toLocaleDateString()}</p>
-          {/* Add other card header information as needed */}
         </div>
         <div className="card-body">
-          {/* Moved card details here */}
           <div className="order-details">
-            {/* ... specific order details ... */}
             <p>Order Number: {order.orderNumber}</p>
+            <p>Recipient Name: {order.shippingAddress.recipientName}</p>
+            <p>Phone Number: {order.shippingAddress.phoneNumber}</p>
             <p>Order Status: {order.orderStatus}</p>
-            <p>Payment Method: {order.paymentMethod}</p>
-            <p>Subtotal Price: {order.subtotalPrice}</p>
             <p>Total Price: {order.totalPrice}</p>
-            {/* ... add more details as needed */}
           </div>
           <div className="shipment-info">
-            {/* ... shipment information ... */}
-            <p>Shipment Status: {order.shipmentStatus}</p>
-            <p>Shipping Address:</p>
-            <ul>
-              <li>{order.shippingAddress.recipientName}</li>
-              <li>{order.shippingAddress.address}</li>
-              {/* ... display other address details */}
-            </ul>
+            <p>Shipment: {order.shipmentDetail.name} status: {order.shipmentStatus}</p>
+            <p>Shipping Address: {order.shippingAddress.address} {order.shippingAddress.province} {order.shippingAddress.postalCode} </p>
           </div>
         </div>
       </li>

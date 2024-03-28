@@ -5,6 +5,7 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
+  const [error, setError] = useState('');
 
   const handleLogin = async () => {
     try {
@@ -18,31 +19,32 @@ const Login = () => {
 
       const data = await response.json()
       if (response.ok) {
-        localStorage.setItem("token", data.token);
+        const token = data.token;
+        localStorage.setItem("token", token);
 
-        try{
-          const roleResponse = await fetch('http://localhost:8080/user/validate', {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${data.token}` } 
-          });
-          const role = await roleResponse.text();
-          setRole(role);
-        } catch (error) {
-          console.error('Error validating authorization:', error);
-        }
-        
-      if(role === "OWNER", "EMPLOYEE"){
-          window.location.href = "/order";
-        } else if(role === ""){
+        const roleResponse = await fetch('http://localhost:8080/user/validate', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` } 
+        });
+        const role = await roleResponse.text();
+
+        setRole(role);
+
+        if(role === ""){
           window.location.href = "/createstore";
+        } else if(role === "OWNER", "EMPLOYEE"){
+          window.location.href = "/order";
         }
       } else {
         console.error('Login failed:', response.statusText);
+        setError('Invalid username or password');
       }
     } catch (error) {
       console.error('Error during login:', error.message);
+      setError('Invalid username or password');
     }
   };
+
 
   return (
     <div className="login-container">
@@ -59,6 +61,7 @@ const Login = () => {
           <input required type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
       </div>
+      {error && <div className="error-text">{error}</div>}
       <div>
         <button className="login-button" onClick={handleLogin}>
           Login

@@ -1,12 +1,12 @@
 .create-store-container {
-    margin: 100px auto;
+    margin: 20px auto;
     max-width: 25%;
 }
 
 .create-store-header {
     text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 2.3em;
+    margin-top: 8%;
 }
 
 .form-group {
@@ -37,6 +37,8 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    width: 40%;
+    margin: 0 1%;
 }
 
 .create-store-button:hover {
@@ -52,15 +54,9 @@
     }
 }
 
-.back-button {
-    margin-top: 20px;
-    background-color: #222;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    justify-content: flex-end;
-    cursor: pointer;
+.create-store-button-container{
+    display: flex;
+    justify-content: space-between;
 }
 
 .header{

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Navbar from "../Navbar";
 import "../../css/productDetail.css";
 
 const ProductDetail = () => {
@@ -18,6 +19,7 @@ const ProductDetail = () => {
           },
         });
         const data = await response.json();
+        console.log(data);
         setProduct(data);
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -26,6 +28,7 @@ const ProductDetail = () => {
     
     fetchData();
   }, []);
+
 
   const deleteProduct = async () => {
     await fetch(`http://localhost:8080/products/delete`, {
@@ -38,33 +41,32 @@ const ProductDetail = () => {
   }
 
   return (
+    <div>
+    <Navbar />
+    <h1 className="header">Product Detail</h1>
     <div className="product-detail-container">
-      <div>
-        <h1>Product Detail</h1>
         <div className="product-image-container">
           {product.imageUrls && product.imageUrls.map((imageUrl, index) => (
             <img className="product-image" key={index} src={imageUrl} alt={product.name} />
           ))}
         </div>
-        <h2>{product.name}</h2>
+        <h1>{product.name}</h1>
         <p dangerouslySetInnerHTML={{__html: product.description}}></p>
-        <h3>Variants:</h3>
+        <h2>Variants</h2>
+        <div className="product-variant">
         {product.variants && product.variants.map((variant, index) => (
-          <div className="product-variant" key={index}>
-            <h4>Variant {index + 1}</h4>
-            <p>Price: {variant.price}</p>
-            <p>Weight: {variant.weight}</p>
-            <p>Options:</p>
-            <ul>
-              {variant.options.map((option, optionIndex) => (
-                <li key={optionIndex}>
+          <div key={index}>
+            <li>Option {index + 1}</li>
+            {variant.options.map((option, optionIndex) => (
+                <p key={optionIndex}>
                   {option.name}: {option.value}
-                </li>
+                </p>
               ))}
-            </ul>
+            <p>ราคา: {variant.price} บาท ต่อ น้ำหนัก {variant.weight} กิโลกรัม</p>
           </div>
         ))}
-      </div>
+        </div>
+    </div>
     </div>
   );
 
